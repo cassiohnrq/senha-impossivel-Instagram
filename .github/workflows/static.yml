@@ -1,9 +1,8 @@
-# .github/workflows/deploy.yml
-name: Deploy Senha Impossível Instagram to GitHub Pages
+name: Deploy para GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -22,30 +21,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      # Passo 1: Clonar o repositório
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Passo 2: Instalar dependências do Composer, caso existam
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2' # versão do PHP que deseja usar
-
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      # Passo 3: Configurar GitHub Pages
-      - name: Setup Pages
+      - name: Configurar Pages
         uses: actions/configure-pages@v5
 
-      # Passo 4: Upload dos arquivos para deploy
-      - name: Upload artifact
+      - name: Uploadar artefatos
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # envia todo o conteúdo do projeto
+          path: '.'     # ou se seu site estiver numa subpasta build/public, defina esse caminho
 
-      # Passo 5: Publicar no GitHub Pages
-      - name: Deploy to GitHub Pages
+      - name: Deploy to Pages
         id: deployment
         uses: actions/deploy-pages@v4
