@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senha com Exigências Validadas</title>
+  <style>
+    body {
+      background-color: #111827;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .container {
+      background-color: #1f2937;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #374151;
+      color: white;
+    }
+
+    .message {
+      margin-top: 16px;
+      font-size: 15px;
+      transition: opacity 0.3s ease;
+      color: #fbbf24;
+    }
+
+    .ok {
+      color: #4ade80;
+    }
+
+    .error {
+      color: #f87171;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <label for="password">Crie sua senha:</label>
+    <input type="text" id="password" placeholder="Digite sua senha..." autocomplete="off" />
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    const input = document.getElementById('password');
+    const message = document.getElementById('message');
+
+    const validacoes = [
+      {
+        texto: "A senha deve conter letras.",
+        validar: s => /[a-zA-Z]/.test(s)
+      },
+      {
+        texto: "A senha deve conter números.",
+        validar: s => /\d/.test(s)
+      },
+      {
+        texto: "A senha deve conter letras maiúsculas.",
+        validar: s => /[A-Z]/.test(s)
+      },
+      {
+        texto: "A senha deve conter caracteres especiais.",
+        validar: s => /[^a-zA-Z0-9]/.test(s)
+      },
+      {
+        texto: "A senha deve conter o nome do provedor.",
+        validar: s => /(gmail|outlook|yahoo|hotmail|icloud|uol|bol|terra|Alternativa)/i.test(s)
+      },
+      {
+        texto: "A senha deve conter algum beneficio do provedor.",
+        validar: s => /(Deezer|Mediquo|TV|tocalivros|qualifica|max)/i.test(s)
+      },
+      {
+        texto: "A senha deve conter um feitiço do Harry Potter.",
+        validar: s => /(expelliarmus|nox|lumos|alohomora|crucio)/i.test(s)
+      },
+      {
+        texto: "A senha deve conter o nome do dono do provedor.",
+        validar: s => /(joão|pedro|carla|amanda|rafael|Isaque)/i.test(s)
+      },
+		{
+  		texto: "A senha deve conter um emoji.",
+  		validar: s => /[\u{1F300}-\u{1FAFF}]/u.test(s)
+        },
+      {
+        texto: "A senha deve conter quantas cidades a Alternativa atende.",
+        validar: s => /(4|6|salvador|curitiba|fortaleza|recife)/i.test(s)
+      },
+      {
+        texto: "A senha deve conter quem nasceu primeiro o ovo ou a galinha.",
+        validar: s => /(fusca|galinha|hotwheels|boneca|lego|barbie)/i.test(s)
+      },
+      {
+        texto: "A senha deve ter menos de 30 caracteres.",
+        validar: s => s.length < 30
+      }
+    ];
+
+    let etapa = 0;
+    let timeout = null;
+
+    function mostrarMensagem(texto, tipo = '') {
+      message.textContent = texto;
+      message.className = `message ${tipo}`;
+    }
+
+    function limparMensagem() {
+      message.textContent = '';
+      message.className = 'message';
+    }
+
+    function validarAtual(senha) {
+      if (etapa >= validacoes.length) return;
+
+      const atual = validacoes[etapa];
+      const passou = atual.validar(senha);
+
+      if (passou) {
+        mostrarMensagem(`✅ ${atual.texto}`, 'ok');
+        etapa++;
+        setTimeout(() => {
+          limparMensagem();
+          validarAtual(senha); // Chamar próxima validação automaticamente
+        }, 1000);
+      } else {
+        mostrarMensagem(`❌ ${atual.texto}`, 'error');
+      }
+    }
+
+    input.addEventListener('input', () => {
+      clearTimeout(timeout);
+      const senha = input.value;
+
+      if (senha.length === 0) {
+        limparMensagem();
+        return;
+      }
+
+      // Se ainda tem exigência para validar
+      if (etapa < validacoes.length) {
+        validarAtual(senha);
+      }
+    });
+  </script>
+
+</body>
+</html>
