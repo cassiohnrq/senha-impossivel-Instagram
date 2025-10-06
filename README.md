@@ -1,6 +1,8 @@
 # senha-impossivel-TIKTOK
 Desafio “Senha Impossível – TikTok/Instagram”: um gerador e validador interativo de senhas com exigências criativas e inusitadas. Criado em HTML, CSS e JavaScript, o projeto testa a paciência e a imaginação do usuário enquanto ensina boas práticas de segurança de forma divertida.
 
+# Veja no pages: https://cassiohnrq.github.io/senha-impossivel-Instagram
+
 # 🔐 Senha Impossível – TikTok/Instagram
 
 ## 🧠 Sobre o Projeto
